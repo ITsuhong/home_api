@@ -19,6 +19,11 @@ export class Diary extends BaseEntity {
     comment: '日记内容',
   })
   content: string;
+  @Column({
+    comment: '图片',
+    nullable: true,
+  })
+  imageList: string;
   @ManyToOne(() => User, (user) => user.diarys)
   user: User;
 

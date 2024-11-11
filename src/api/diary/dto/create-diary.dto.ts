@@ -7,4 +7,5 @@ export class CreateDiaryDto {
   mood: number;
   @IsNotEmpty()
   weather: number;
+  imageList: string;
 }

@@ -9,6 +9,9 @@ import { Diary } from '@/api/diary/entities/diary.entities';
 import { PaginationDTO } from '@/common/dto/pagination.dto';
 import { getPagination } from '@/common/utils/index.util';
 import { FindDiaryDto } from '@/api/diary/dto/find-diary.dto';
+import { CommentEntities } from '@/api/comment/entities/comment.entities';
+import fetch from 'node-fetch';
+import { env } from '@/common/config';
 
 @Injectable()
 export class DiaryService {
@@ -21,6 +24,24 @@ export class DiaryService {
     const diary = new Diary();
     Object.assign(diary, { ...data, user });
     await this.diaryRepository.save(diary);
+    // const res = await fetch(
+    //   `https://api.weixin.qq.com/cgi-bin/token?appid=${env.WX_CONFIG.AppID}&secret=${env.WX_CONFIG.AppSecret}&grant_type=client_credential`,
+    // );
+    // const { access_token } = await res.json();
+    // const result = await fetch(
+    //   'https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=ACCESS_TOKEN',
+    //   {
+    //     method: 'post',
+    //     body: {
+    //       access_token: access_token,
+    //       template_id: 'qK3EqV3mLANtXs-vFpVlfBS31XL86CK8dKf8PEOHoIw',
+    //       touser: 'ofqfO5ZNFMjZPP1FEiyDnbmuq3bc',
+    //       miniprogram_state: 'trial',
+    //       page: '/pages/diaryList/index?id=1',
+    //       // data:
+    //     },
+    //   },
+    // );
     return new Result().ok();
   }
 
@@ -28,6 +49,7 @@ export class DiaryService {
     const { pageNumber = 1, pageSize = 10 } = data;
     const res = await this.diaryRepository
       .createQueryBuilder('diary')
+      .leftJoinAndSelect('diary.comments', 'comment')
       .where('diary.userId=:id', { id: data.user_id })
       .skip((pageNumber - 1) * pageSize)
       .take(pageSize)
