@@ -10,6 +10,7 @@ import { DiaryModule } from '@/api/diary/diary.module';
 import { CommentModule } from '@/api/comment/comment.module';
 import { AlbumModule } from '@/api/album/album.module';
 import { UploadModule } from '@/api/upload/upload.module';
+import { MoviesModule } from '@/api/movies/movies.module';
 
 @Global()
 @Module({
@@ -21,6 +22,7 @@ import { UploadModule } from '@/api/upload/upload.module';
     CommentModule,
     AlbumModule,
     UploadModule,
+    MoviesModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       global: true,

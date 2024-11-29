@@ -31,5 +31,6 @@ export abstract class BaseEntity {
   @VersionColumn({
     select: false,
   })
+  @Column({ nullable: true })
   version: number;
 }
